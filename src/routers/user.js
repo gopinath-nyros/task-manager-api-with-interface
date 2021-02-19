@@ -4,23 +4,39 @@ const router = new express.Router();
 const sharp = require("sharp");
 const User = require("../models/user");
 const auth = require("../middleware/auth");
-
+const moment = require("moment");
 // load multer
 const multer = require("multer");
-// const { sendWelcomeEmail, cancelEmail } = require("../emails/account");
+const { sendWelcomeEmail, cancelEmail } = require("../emails/account");
 
 router.get("", (req, res) => {
-  res.render("index");
+  if (req.cookies.authcookie) {
+    res.redirect("/dashboard");
+  } else {
+    res.render("index", {
+      error: "",
+      title: "Login",
+      createdBy: "Gopinath",
+    });
+  }
+});
+
+router.get("/about", auth, (req, res) => {
+  res.render("about", {
+    activeClass: "active",
+    title: "about",
+    pagename: "about",
+    createdBy: "Gopinath",
+  });
 });
 
 // USERS
-// endpoint for user create using async await
+// endpoint for creating new user
 router.post("/users", async (req, res) => {
   const user = new User(req.body);
   try {
     await user.save();
-    // sendWelcomeEmail(user.email, user.name);
-    // const token = await user.generateAuthToken();
+    sendWelcomeEmail(user.email, user.name);
     res
       .status(201)
       .send({ msg: "Registered successfully, please login to continue" });
@@ -29,17 +45,21 @@ router.post("/users", async (req, res) => {
   }
 });
 
-// new route for login
+// route for login user
 router.post("/users/login", async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   try {
     const user = await User.findByCredentials(
       req.body.email,
       req.body.password
     );
     const token = await user.generateAuthToken();
+    res.cookie("authcookie", token, {
+      maxAge: 86400000,
+      httpOnly: true,
+    });
+
     // coming from userSchema
-    // res.send(user);
     res.send({ user, token });
   } catch (e) {
     res.status(400).send({
@@ -49,14 +69,16 @@ router.post("/users/login", async (req, res) => {
 });
 
 // route for logout
-router.post("/users/logout", auth, async (req, res) => {
+router.get("/logout", auth, async (req, res) => {
   try {
     // filter particular token to logout
+    const tokenToRemove = req.cookies.authcookie;
     req.user.tokens = req.user.tokens.filter((token) => {
-      return token.token !== req.token;
+      return token.token !== tokenToRemove;
     });
     await req.user.save();
-    res.send();
+    res.cookie("authcookie", "", { maxAge: 1 });
+    res.redirect("/");
   } catch (e) {
     res.status(500).send();
   }
@@ -74,20 +96,14 @@ router.post("/users/logoutAll", auth, async (req, res) => {
   }
 });
 
-// end point for get user with auth
-router.get("/users/me", auth, async (req, res) => {
-  console.log(req.method);
-  console.log(req.get("Content-Type"));
-  console.log("calling get profile...");
-  // console.log(req.body);
-  // res.send(req.user);
-  // console.log(req.user);
-  // if (req.user) {
-  res.render("dashboard", { user: req.user });
-  // }
-
-  // res.render("dashboard", { user: req.user });
-  // res.redirect(200, "dashboard");
+router.get("/dashboard", auth, (req, res) => {
+  res.render("dashboard", {
+    moment: moment,
+    user: req.user,
+    title: "dashboard",
+    pagename: "home",
+    createdBy: "Gopinath",
+  });
 });
 
 // end point for get individual user
@@ -130,12 +146,25 @@ router.patch("/users/me", auth, async (req, res) => {
   }
 });
 
+// endpoint for remove page
+router.get("/settings", auth, async (req, res) => {
+  res.render("settings", {
+    user: req.user,
+    title: "settings",
+    pagename: "settings",
+    createdBy: "Gopinath",
+  });
+});
+
 // endpoint for user resource delete with authentication
-router.delete("/users/me", auth, async (req, res) => {
+router.delete("/removeaccount", auth, async (req, res) => {
   try {
+    console.log(req.user);
+    console.log("req method is " + req.method);
     await req.user.remove();
+    res.cookie("authcookie", "", { maxAge: 1 });
     cancelEmail(req.user.email, req.user.name);
-    res.send(req.user);
+    res.send("deleted");
   } catch (e) {
     res.status(500).send;
   }
@@ -159,6 +188,7 @@ router.post(
   auth,
   upload.single("avatar"),
   async (req, res) => {
+    console.log("uploading........img");
     // create a new buffer
     const buffer = await sharp(req.file.buffer)
       .resize({
@@ -169,7 +199,10 @@ router.post(
       .toBuffer();
     req.user.avatar = buffer;
     await req.user.save();
-    res.send("success !");
+    res.send({
+      msg: "success",
+      userid: req.user._id,
+    });
   },
   (error, req, res, next) => {
     res.status(400).send({ error: error.message });
@@ -185,6 +218,8 @@ router.delete("/users/me/avatar", auth, async (req, res) => {
 
 // serving the img files
 router.get("/users/:id/avatar", async (req, res) => {
+  console.log(req.user);
+  console.log(req.body);
   try {
     const user = await User.findById(req.params.id);
     console.log(user.id);

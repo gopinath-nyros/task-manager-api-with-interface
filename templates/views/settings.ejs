@@ -1,0 +1,27 @@
+<%- include('../partials/head'); -%> <%- include('../partials/navbar'); -%>
+
+<section id="settings">
+  <div class="container">
+    <div class="row">
+      <h4 class="center">Remove Account</h4>
+      <p class="center">
+        Remove account will <strong>delete your account</strong> and all the
+        tasks associated with your account.
+      </p>
+      <p class="center">
+        <button
+          class="waves-effect waves-light btn red"
+          onclick="removeAccount()"
+        >
+          Delete Account
+        </button>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="cc"></section>
+
+<!-- Footer -->
+<%- include('../partials/footer'); -%>
+<script src="/js/removeaccount.js"></script>

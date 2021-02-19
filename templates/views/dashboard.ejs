@@ -1,0 +1,115 @@
+<%- include('../partials/head'); -%> <%- include('../partials/navbar'); -%>
+
+<div id="bg">
+  <canvas id="mycanvas"></canvas>
+  <section id="bio">
+    <div class="container">
+      <div class="row">
+        <div class="greet">
+          <h5 class="center">Welcome <%- user.name %></h5>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col m5 s12">
+          <div id="profile-pic">
+            <% if(user.avatar){ %>
+            <img
+              id="profilepicture"
+              src="/users/<%= user.id %>/avatar"
+              class="image--cover"
+            />
+            <% } else{ %>
+            <img
+              id="profilepicture"
+              src="img/default.jpg"
+              class="image--cover emptypic"
+            />
+            <% } %>
+            <input id="avatar" type="file" name="avatar" class="ss" />
+            <label for="avatar">profile picture</label>
+          </div>
+        </div>
+        <div class="col m7 s12">
+          <ul class="collapsible" id="userbio">
+            <li>
+              <div class="collapsible-header">
+                <span class="bio">Name: <%= user.name %> </span>
+              </div>
+            </li>
+            <li>
+              <div class="collapsible-header">
+                <span class="bio">Age: <%= user.age %></span>
+              </div>
+            </li>
+            <li>
+              <div class="collapsible-header">
+                <span class="bio">Email: <%= user.email %></span>
+              </div>
+            </li>
+            <li>
+              <div class="collapsible-header">
+                <span class="bio"
+                  >Created: <%= moment(user.createdAt).format('DD/MM/YY') %>
+                </span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus amet
+          aliquam magnam? Rerum explicabo sequi cumque molestias tenetur ad
+          aliquam molestiae distinctio id reiciendis dolorem nulla iste deleniti
+          reprehenderit, dicta inventore eius nobis expedita ex at voluptates
+          pariatur dolore odio vel. Vitae ipsa libero facilis eveniet impedit
+          voluptatibus architecto illum.
+        </p>
+      </div>
+
+      <div class="row">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus amet
+          aliquam magnam? Rerum explicabo sequi cumque molestias tenetur ad
+          aliquam molestiae distinctio id reiciendis dolorem nulla iste deleniti
+          reprehenderit, dicta inventore eius nobis expedita ex at voluptates
+          pariatur dolore odio vel. Vitae ipsa libero facilis eveniet impedit
+          voluptatibus architecto illum.
+        </p>
+      </div>
+
+      <div class="row">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus amet
+          aliquam magnam? Rerum explicabo sequi cumque molestias tenetur ad
+          aliquam molestiae distinctio id reiciendis dolorem nulla iste deleniti
+          reprehenderit, dicta inventore eius nobis expedita ex at voluptates
+          pariatur dolore odio vel. Vitae ipsa libero facilis eveniet impedit
+          voluptatibus architecto illum.
+        </p>
+      </div>
+
+      <div class="row">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus amet
+          aliquam magnam? Rerum explicabo sequi cumque molestias tenetur ad
+          aliquam molestiae distinctio id reiciendis dolorem nulla iste deleniti
+          reprehenderit, dicta inventore eius nobis expedita ex at voluptates
+          pariatur dolore odio vel. Vitae ipsa libero facilis eveniet impedit
+          voluptatibus architecto illum.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Footer -->
+<%- include('../partials/footer'); -%>
+<script src="/js/profile.js"></script>
+<script src="/js/bg.js"></script>

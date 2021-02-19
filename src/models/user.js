@@ -133,9 +133,8 @@ userSchema.pre("remove", async function (next) {
 // hash password using pre
 userSchema.pre("save", async function (next) {
   const user = this;
-  // console.log("just before saving");
   // do hashing here
-  // true if user is created and also true if user is updating passwoed
+  // true if user is created and also true if user is updating password
   if (user.isModified("password")) {
     user.password = await bcrypt.hash(user.password, 8);
   }

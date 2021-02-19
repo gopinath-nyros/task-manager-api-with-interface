@@ -2,6 +2,7 @@ const express = require("express");
 const router = new express.Router();
 const auth = require("../middleware/auth");
 const Task = require("../models/task");
+const moment = require("moment");
 
 // TASKS
 // endpoint for user create using async await
@@ -19,35 +20,52 @@ router.post("/tasks", auth, async (req, res) => {
 });
 
 // end point for get tasks array with auth
-// GET /tasks?completed=true
-// GET /tasks?limit=10&skip=20
-//GET /tasks?sortBy=createdAt:desc
 router.get("/tasks", auth, async (req, res) => {
+  console.log("sortBy is...." + req.query.sortBy);
+  const limit = req.query.limit || 5;
+  const page = req.query.skip || 1;
+
   match = {};
   sort = {};
   if (req.query.completed) {
     match.completed = req.query.completed === "true";
-    console.log(match.completed);
-    console.log(typeof match.completed);
-    console.log(match);
   }
   if (req.query.sortBy) {
     const parts = req.query.sortBy.split(":");
     sort[parts[0]] = parts[1] === "desc" ? -1 : 1;
+    console.log(sort);
   }
+  console.log(req.query.sortBy);
   try {
-    await req.user
+    const query = await req.user
       .populate({
         path: "tasks",
         match,
         options: {
-          limit: parseInt(req.query.limit),
-          skip: parseInt(req.query.skip),
+          limit: parseInt(limit),
+          skip: parseInt(limit * page - limit),
           sort,
         },
       })
       .execPopulate();
-    res.send(req.user.tasks);
+
+    const count = req.user.tasks.length;
+    const totalCount = await Task.countDocuments({ owner: req.user.id });
+
+    res.render("task", {
+      tasks: req.user.tasks,
+      moment: moment,
+      createdBy: "Gopinath",
+      pagename: "tasks",
+      title: "tasks",
+      current: page,
+      limit,
+      count,
+      sort,
+      match,
+      totalCount,
+      pages: Math.ceil(totalCount / limit),
+    });
   } catch (e) {
     res.status(500).send();
   }
@@ -69,6 +87,7 @@ router.get("/tasks/:id", auth, async (req, res) => {
 
 // end point for update a single task using patch http method
 router.patch("/tasks/:id", auth, async (req, res) => {
+  console.log(req.body);
   const updates = Object.keys(req.body);
   const allowedUpdates = ["completed", "description"];
   const isValidOperation = updates.every((update) =>

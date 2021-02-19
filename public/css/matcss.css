@@ -1,5 +1,5 @@
 body {
-  background: #f5f5f5;
+  font-family: "Roboto", sans-serif;
 }
 
 h5 {
@@ -7,22 +7,79 @@ h5 {
 }
 
 #login {
-  /* width: 1000px; */
-
-  /* height: 700px; */
   margin-top: 50px;
   margin-bottom: 50px;
 }
 
-/* .container {
-  margin-top: 80px;
-  width: 400px;
-  height: 700px;
-} */
-
 .signup {
   padding: 70px;
   padding-top: 20px;
+}
+
+#mycanvas {
+  position: absolute;
+  z-index: -1000;
+}
+
+#about {
+  margin-top: 30px;
+  line-height: 2.3rem;
+}
+
+#settings {
+  margin-top: 30px;
+  line-height: 2.3rem;
+}
+
+#settings strong {
+  font-weight: 600;
+}
+
+.greet {
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+#profile-pic {
+  padding-bottom: 10px;
+}
+
+.image--cover {
+  width: 200px;
+  height: 200px;
+  border: 3px solid #e4e4f1;
+  border-radius: 50%;
+  margin: 20px;
+  object-fit: cover;
+  object-position: center right;
+}
+
+#taskslist {
+  margin-top: 30px;
+}
+
+.add-task {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  color: #039be5;
+  font-weight: bolder;
+}
+
+.add-task:before {
+  content: " ------- ";
+  color: #039be5;
+}
+
+.add-task:after {
+  content: " ------- ";
+  color: #039be5;
+}
+.brand-logo {
+  font-weight: 400px;
+}
+
+nav ul li a {
+  font-weight: 600px;
 }
 
 .tabs .indicator {
@@ -36,13 +93,94 @@ h5 {
   padding-top: 10px;
 }
 
+.material-icons {
+  color: #039be5;
+}
+
+.material-icons.active {
+  color: #039be5 !important;
+}
+
+.delete,
+.edit {
+  cursor: pointer;
+}
+
 .confirmation-tabs-btn {
   position: absolute;
+}
+
+.cc {
+  margin-top: 600px;
+}
+
+label[for="avatar"] {
+  position: absolute;
+  left: 270px;
+  top: 375px;
+  font-size: 15px;
+  color: grey;
+  cursor: pointer;
+}
+
+.ss {
+  display: none;
+}
+
+#userbio li div {
+  cursor: auto;
+}
+
+.bio {
+  margin-left: 30px;
+}
+
+.emptypic {
+  background-color: grey;
+}
+
+#pagination #pagenumbers ul li a {
+  font-size: 15px;
+}
+
+[data-target="dropdown1"],
+[data-target="dropdown2"] {
+  font-size: 11px;
+  width: 60px;
+  height: 32px;
+  padding-left: 14x;
+}
+
+#sorting {
+  position: relative;
+  left: 184px;
+  margin-top: 13px;
 }
 
 @media only screen and (max-width: 600px) {
   .signup {
     padding: 0;
     padding-bottom: 30px;
+  }
+  #profile-pic {
+    margin-left: 23px;
+  }
+  label[for="avatar"] {
+    font-size: 13px;
+    left: 135px;
+    top: 365px;
+  }
+  #sorting {
+    position: static;
+    margin-left: 33px;
+  }
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  label[for="avatar"] {
+    left: 150px;
+  }
+  #sorting {
+    /* left: 160px; */
   }
 }

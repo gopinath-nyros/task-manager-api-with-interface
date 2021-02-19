@@ -1,0 +1,167 @@
+
+    <%- include('../partials/head'); -%> <%- include('../partials/navbar'); -%>
+
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus amet aliquam magnam? Rerum explicabo
+                    sequi cumque molestias tenetur ad aliquam molestiae distinctio id reiciendis dolorem nulla iste
+                    deleniti reprehenderit, dicta inventore eius nobis expedita ex at voluptates pariatur dolore odio
+                    vel. Vitae ipsa libero facilis eveniet impedit voluptatibus architecto illum.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="task-form">
+        <div class="container">
+            <div class="row">
+                <h5 class="center add-task">Add Task</h5>
+                <div class="input-field col m7 s12">
+                    <textarea id="taskdescription" class="materialize-textarea"></textarea>
+                    <label for="textarea1">task description</label>
+                    <span class="helper-text task red-text"></span>
+                  </div>
+
+                  <div class="input-field col m3 s12 status">
+                    <select id="status" class="browser-default">
+                        <option  value="incomplete" selected>incomplete</option>
+                        <option id="completed" value="completed" disabled>completed</option>
+                    </select>
+                    <span class="helper-text checkstatus red-text"></span>
+                    <!-- <label>Status</label> -->
+                  </div>
+
+                  <div class="input-field col m2 s12 center ">
+                    <button id="tasksubmit" class="btn-floating btn-large waves-effect waves-light blue pulse"><i class="material-icons">add</i></button>
+                  </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="taskslist">
+        <div class="container">
+            <div class="row">
+            <div class="card">
+                <table id="tasktable" class="highlight responsive-table centered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Task</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Updated</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskbody">
+                        <% if(tasks.length != 0){ %>
+                            <% tasks.forEach(function(task, i){ %>
+                            <tr id=<%= task._id %>>
+                                <td><%= i+1 %></td>
+                                <td><%= task.description %></td>
+                                <td><%= task.completed ? 'completed' : 'incomplete' %></td>
+                                <td><%= moment(task.createdAt).format('DD/MM/YY')  %></td>
+                                <td><%= moment(task.updatedAt).format('DD/MM/YY')  %></td>
+                                <td><i class="material-icons collapsible-secondary edit">edit</i></td>
+                                <td><i class="material-icons collapsible-secondary delete">delete</i></td>
+                            </tr>
+                            <% }); %>
+                          <% } else { %>  
+                            <tr>
+                                <td colspan="7">No tasks found</td>
+                            </tr>
+                         <% } %>
+                    </tbody>
+                </table>
+                </div> 
+            </div>
+        </div>
+    </section>
+
+    <section id="pagination">
+        <div class="container">
+            <div class="row">
+                <div id="pagenumbers" class="col m6 s12">                
+                    <% if (sort.createdAt) { %>
+                    <% sortBy = sort.createdAt === 1 ? 'createdAt:asc' : 'createdAt:desc' %>
+                    <%} else { %>
+                        <% sortBy = '' %>
+                    <% } %>
+                    <% if (totalCount > 0 && count >= 0  && limit > 0 ) { %>
+                        <ul class="pagination center">
+                            <% if (current == 1) { %>
+                                <li class="waves-effect disabled"><a>First</a></li>
+                            <% } else { %>
+                                <li class="waves-effect"><a href="/tasks?limit=<%= limit %>&skip=1&completed=<%= match.completed %>&sortBy=<%= sortBy %>">First</a></li>
+                            <% } %>
+                            <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                            <% if (i !== 1) { %>
+                                <li class="disabled waves-effect"><a>...</a></li>
+                            <% } %>
+                            <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                                <% if (i == current) { %>
+                                    <li class="active blue waves-effect"><a><%= i %></a></li>
+                                <% } else { %>
+                                    <li class="waves-effect"><a href="/tasks?limit=<%= limit %>&skip=<%= i %>&completed=<%= match.completed %>&sortBy=<%= sortBy %>"><%= i %></a></li>
+                                <% } %>
+                                <% if (i == Number(current) + 4 && i < pages) { %>
+                                    <li class="disabled waves-effect"><a>...</a></li>
+                                <% } %>
+                            <% } %>
+                            <% if (current == pages) { %>
+                                <li class="disabled waves-effect"><a>Last</a></li>
+                            <% } else { %>
+                                <li class="waves-effect"><a href="/tasks?limit=<%= limit %>&skip=<%= pages %>&completed=<%= match.completed %>&sortBy=<%= sortBy %>">Last</a></li>
+                            <% } %>
+                        </ul>
+                    <% } %> 
+                </div>
+                
+                <div id="sorting" class="col m6 s12">   
+                    <div class="col m3 s6">
+                        <!-- Dropdown Trigger -->
+                        <% if (totalCount > 0) { %>
+                            <% if (count >= 0 || limit > 0  ) { %>
+                            <a class='dropdown-trigger blue btn' href='#' data-target='dropdown1'>limit</a>
+                            <!-- Dropdown Structure -->
+                            <ul id='dropdown1' class='dropdown-content'>
+                                <li><a href="/tasks?limit=<%= 5 %>&skip=<%= 1 %>">5</a></li>
+                                <li><a href="/tasks?limit=<%= 10 %>&skip=<%= 1 %>">10</a></li>
+                                <li><a href="/tasks?limit=<%= 0 %>">All</a></li>
+                            </ul>
+                            <% } %> 
+                        <% } %> 
+                    </div>
+                    <div class="col m3 s6">
+                        <!-- Dropdown Trigger -->
+                        <% if (totalCount > 0) { %>
+                            <% if (count >= 0 || limit > 0  ) { %>
+                            <a class='dropdown-trigger blue btn' href='#' data-target='dropdown2'>sort</a>
+                            <!-- Dropdown Structure -->
+                            <ul id='dropdown2' class='dropdown-content'>
+                                <li><a href="/tasks?limit=<%= limit %>&sortBy=<%= 'createdAt:desc' %>">desc</a></li>
+                                <li><a href="/tasks?limit=<%= limit %>&sortBy=<%= 'createdAt:asc' %>">asc</a></li>
+                                <li><a href="/tasks?limit=<%= limit %>&completed=<%= "true" %>">complete</a></li>
+                                <li><a href="/tasks?limit=<%= limit %>&completed=<%= "false" %>">incomplete</a></li>
+                            </ul>
+                            <% } %> 
+                        <% } %> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cc"></section>
+
+<!-- Footer -->
+<%- include('../partials/footer'); -%>
+<script src="/js/task.js"></script>
+<script>
+     $('.dropdown-trigger').dropdown();
+</script>
+
+
+
+

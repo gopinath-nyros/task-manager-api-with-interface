@@ -3,31 +3,25 @@ const app = express();
 // connect to db
 require("./db/mongoose");
 
-// load the hbs
-const hbs = require("hbs");
+app.use(express.static("public"));
+app.set("view engine", "ejs");
+
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 // load path module
 const path = require("path");
 
 // path for public directory
 publicDirectory = path.join(__dirname, "../public");
-app.set("view engine", "hbs");
-
-// to serve static files
-app.use(express.static(publicDirectory));
 
 // path for views directory
 viewsPath = path.join(__dirname, "../templates/views");
 app.set("views", viewsPath);
 
-// path for partials directory
-partialsPath = path.join(__dirname, "../templates/partials");
-hbs.registerPartials(partialsPath);
-
-console.log(__dirname);
-console.log(path.join(__dirname, "../public"));
 const userRouter = require("./routers/user");
 const taskRouter = require("./routers/task");
-// const app = express();
+
 const port = process.env.PORT;
 
 app.use(express.json());

@@ -1,0 +1,25 @@
+<nav class="#40c4ff light-blue">
+  <div class="container">
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo">Task Manager</a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger"
+        ><i class="material-icons">menu</i></a
+      >
+      <ul class="right hide-on-med-and-down">
+        <li <% if (pagename === 'home') { %>class="active" <% } %>><a href="/dashboard">Home</a></li>
+        <li <% if (pagename === 'about') { %>class="active" <% } %>><a href="/about">About</a></li>
+        <li <% if (pagename === 'tasks') { %>class="active" <% } %>><a href="/tasks">Tasks</a></li>
+        <li <% if (pagename === 'settings') { %>class="active" <% } %>><a href="/settings">Settings</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<ul class="sidenav" id="mobile-demo">
+  <li <% if (pagename === 'home') { %>class="active" <% } %>><a href="/dashboard">Home</a></li>
+  <li <% if (pagename === 'about') { %>class="active" <% } %>><a href="/about">About</a></li>
+  <li <% if (pagename === 'tasks') { %>class="active" <% } %>><a href="/tasks">Tasks</a></li>
+  <li <% if (pagename === 'settings') { %>class="active" <% } %>><a href="/settings">Settings</a></li>
+  <li><a href="/logout">Logout</a></li>
+</ul>

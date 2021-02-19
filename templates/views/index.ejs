@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head'); -%>
+
+  <body>
+    <% if(error){ %>
+    <h5 class="center red-text">Authentication Error</h5>
+    <p class="center red-text">please login to continue.</p>
+    <% } %>
+    <section id="login">
+      <div class="container white z-depth-2">
+        <div class="row col s12">
+          <ul class="tabs blue">
+            <li class="tab col s6">
+              <a class="white-text active" href="#login-page">login</a>
+            </li>
+            <li class="tab col s6">
+              <a class="white-text" href="#signup">register</a>
+            </li>
+          </ul>
+          <div id="login-page" class="col s12">
+            <div class="s12">
+              <form id="login-form" class="signup" autocomplete="off">
+                <h5 class="center">Login</h5>
+                <p id="message" class="center">Please login to continue</p>
+
+                <div class="input-field col m12 s12">
+                  <i class="material-icons prefix">email</i>
+                  <input type="email" id="loginEmail" onpaste="return false" />
+                  <label for="loginEmail">Email</label>
+                  <span
+                    class="helper-text red-text login-mail right"
+                    data-error="wrong"
+                    data-success="right"
+                  ></span>
+                </div>
+
+                <div class="input-field col m12 s12">
+                  <i class="material-icons prefix">lock</i>
+                  <input
+                    type="password"
+                    id="loginPassword"
+                    onpaste="return false"
+                  />
+                  <label for="loginPassword">Password</label>
+                  <span
+                    class="helper-text red-text login-password right"
+                    data-error="wrong"
+                    data-success="right"
+                  ></span>
+                </div>
+                <input
+                  type="submit"
+                  name="submit"
+                  value="Login"
+                  class="btn col m2 offset-m5 col s4 offset-s4 blue"
+                />
+                <div class="clearfix"></div>
+              </form>
+            </div>
+          </div>
+          <div id="signup" class="col s12">
+            <div class="s12">
+              <form
+                action=""
+                id="signup-form"
+                class="signup"
+                autocomplete="off"
+              >
+                <h5 class="center">Register</h5>
+                <p class="center" id="signup-msg">Don't have an account ?</p>
+                <div class="input-field col m12 s12">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input type="text" id="username" onpaste="return false" />
+                  <label for="username">Username</label>
+                  <span
+                    class="helper-text red-text signup-user right"
+                    data-error="wrong"
+                    data-success="right"
+                  ></span>
+                </div>
+
+                <div class="input-field col m12 s12">
+                  <i class="material-icons prefix">email</i>
+                  <input type="email" id="signupEmail" onpaste="return false" />
+                  <label for="signupEmail">Email</label>
+                  <span
+                    class="helper-text red-text signup-email right"
+                    data-error="wrong"
+                    data-success="right"
+                  ></span>
+                </div>
+
+                <div class="input-field col m12 s12">
+                  <i class="material-icons prefix">access_time</i>
+                  <input type="number" id="age" onpaste="return false" />
+                  <label for="age">Age</label>
+                  <span
+                    class="helper-text red-text signup-age right"
+                    data-error="wrong"
+                    data-success="right"
+                  ></span>
+                </div>
+
+                <div class="input-field col m12 s12">
+                  <i class="material-icons prefix">lock</i>
+                  <input
+                    type="password"
+                    id="signupPassword"
+                    onpaste="return false"
+                  />
+                  <label for="signupPassword">Password</label>
+                  <span
+                    class="helper-text red-text signup-password right"
+                    data-error="wrong"
+                    data-success="right"
+                  ></span>
+                </div>
+
+                <div class="input-field col m12 s12">
+                  <i class="material-icons prefix">vpn_key</i>
+                  <input
+                    type="password"
+                    id="signupConfirmPassword"
+                    onpaste="return false"
+                  />
+                  <label for="signupConfirmPassword">Confirm Password</label>
+                  <span
+                    class="helper-text red-text signup-con-password right"
+                    data-error="wrong"
+                    data-success="right"
+                  ></span>
+                </div>
+
+                <input
+                  type="submit"
+                  name="submit"
+                  value="register"
+                  class="btn col m2 offset-m5 col s4 offset-s4 blue"
+                />
+
+                <div class="clearfix"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+  <%- include('../partials/footer'); -%>
+  <script src="/js/script.js"></script>
+</html>

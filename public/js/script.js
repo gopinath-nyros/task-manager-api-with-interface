@@ -1,3 +1,4 @@
+// script for create user and login
 // login
 const loginEmail = document.getElementById("loginEmail");
 const loginPassword = document.getElementById("loginPassword");
@@ -6,6 +7,7 @@ const msg = document.getElementById("message");
 // signup
 const username = document.getElementById("username");
 const signupEmail = document.getElementById("signupEmail");
+const signupAge = document.getElementById("age");
 const signupPassword = document.getElementById("signupPassword");
 const signupConfirmPassword = document.getElementById("signupConfirmPassword");
 const signupMsg = document.getElementById("signup-msg");
@@ -20,6 +22,7 @@ signupForm.addEventListener("submit", signupValidate);
 let helperLoginMail = document.querySelector(".login-mail");
 let helperLoginPassword = document.querySelector(".login-password");
 let helperUsername = document.querySelector(".signup-user");
+let helperAge = document.querySelector(".signup-age");
 let helperSignupEmail = document.querySelector(".signup-email");
 let helperSignupPassword = document.querySelector(".signup-password");
 let helperSignupConfirmPassword = document.querySelector(
@@ -85,6 +88,19 @@ function signupValidate(e) {
     helperSignupEmail.innerHTML = "";
   }
 
+  if (!signupAge.value) {
+    // var age = Number(signupAge.value);
+    helperAge.innerHTML = "please enter age";
+    signupAge.focus();
+    return false;
+  } else if (signupAge.value <= "0") {
+    helperAge.innerHTML = "please enter age above 0";
+    signupAge.focus();
+    return false;
+  } else {
+    helperAge.innerHTML = "";
+  }
+
   if (!signupPassword.value) {
     helperSignupPassword.innerHTML = "please enter password";
     signupPassword.focus();
@@ -122,6 +138,7 @@ function signupValidate(e) {
   signup(
     username.value,
     signupEmail.value,
+    signupAge.value,
     signupPassword.value,
     signupConfirmPassword.value
   );
@@ -134,7 +151,7 @@ function formReset() {
 
 // login function
 async function login(email, password) {
-  const url = "http://localhost:3000/users/login";
+  const url = "/users/login";
   const loginData = { email, password };
   const response = await fetch(url, {
     method: "POST",
@@ -142,14 +159,10 @@ async function login(email, password) {
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
+    keepalive: true,
   });
   const data = await response.json();
-  console.log(data);
-  // console.log(data.token);
-  // console.log(typeof data.token);
-  localStorage.setItem("token", data.token);
-  const localToken = localStorage.getItem("token");
-
+  // console.log(data);
   if (data.msg) {
     msg.classList.add("red-text");
     msg.innerHTML = data.msg;
@@ -158,34 +171,26 @@ async function login(email, password) {
     msg.classList.remove("red-text");
     loginEmail.value = "";
     loginPassword.value = "";
-    getProfile(localToken);
+    getProfile();
   }
 }
 
 // get profile
-async function getProfile(token) {
-  const url = "http://localhost:3000/users/me";
-
-  // const data = {token};
+async function getProfile() {
+  const url = "/dashboard";
   const response = await fetch(url, {
     method: "GET",
-    withCredentials: true,
-    credentials: "include",
-    // body: JSON.stringify(data),
     headers: {
-      Authorization: "Bearer " + token,
-      // "Content-type": "application/json; charset=UTF-8",
+      "Content-type": "application/json; charset=UTF-8",
     },
-    // redirect: "follow",
-    // keepalive: true,
   });
-  console.log(response);
+  location.assign("/dashboard");
 }
 
 // signup function
-async function signup(name, email, password, confirmpassword) {
-  const url = "http://localhost:3000/users";
-  const signupData = { name, email, password, confirmpassword };
+async function signup(name, email, age, password, confirmpassword) {
+  const url = "/users";
+  const signupData = { name, email, age, password, confirmpassword };
   const response = await fetch(url, {
     method: "POST",
     body: JSON.stringify(signupData),
@@ -195,10 +200,6 @@ async function signup(name, email, password, confirmpassword) {
   });
   const data = await response.json();
   console.log(data);
-  // console.log(data.msg);
-  // console.log(data.errors);
-  // console.log(data.errors.email);
-  // console.log(data.errors.email.message);
   if (data.errors) {
     if (data.errors.email) {
       helperSignupEmail.innerHTML = data.errors.email.message;
@@ -210,6 +211,7 @@ async function signup(name, email, password, confirmpassword) {
     helperSignupEmail.innerHTML = "";
     username.value = "";
     signupEmail.value = "";
+    signupAge.value = "";
     signupPassword.value = "";
     signupConfirmPassword.value = "";
   }
