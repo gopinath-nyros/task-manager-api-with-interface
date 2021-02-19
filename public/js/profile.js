@@ -1,4 +1,3 @@
-// script for profile picture
 const avatar = document.getElementById("avatar");
 const profilePicture = document.getElementById("profilepicture");
 avatar.addEventListener("change", () => {
@@ -15,7 +14,6 @@ const uploadFile = async (file) => {
     body: fd,
   });
   const data = await response.json();
-  console.log(data.userid);
   if (response.status === 200) {
     const url = `/users/${data.userid}/avatar`;
     const response = await fetch(url, {
@@ -29,6 +27,6 @@ const uploadFile = async (file) => {
     console.log(objectURL);
     profilePicture.src = objectURL;
   } else {
-    alert("please provide only image format");
+    alert(`${data.error}`);
   }
 };

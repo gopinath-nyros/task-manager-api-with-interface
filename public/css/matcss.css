@@ -158,16 +158,20 @@ label[for="avatar"] {
 }
 
 @media only screen and (max-width: 600px) {
+  #login {
+    margin-bottom: 300px;
+  }
+  #profile-pic {
+    margin-left: 55px;
+  }
   .signup {
     padding: 0;
     padding-bottom: 30px;
   }
-  #profile-pic {
-    margin-left: 23px;
-  }
+
   label[for="avatar"] {
     font-size: 13px;
-    left: 135px;
+    left: 165px;
     top: 365px;
   }
   #sorting {
@@ -177,6 +181,9 @@ label[for="avatar"] {
 }
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  #login {
+    margin-bottom: 500px;
+  }
   label[for="avatar"] {
     left: 150px;
   }

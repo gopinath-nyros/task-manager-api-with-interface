@@ -1,5 +1,4 @@
 var mycanvas = document.getElementById("mycanvas");
-console.log(mycanvas);
 
 var parentDiv = document.getElementById("bg");
 
@@ -46,7 +45,6 @@ function adjustWindow() {
   h = mycanvas.height = parentDiv.offsetHeight;
   w = mycanvas.width = parentDiv.offsetWidth;
   init();
-  console.log("changed");
 }
 
 function Circle(x, y, dx, dy, radius) {

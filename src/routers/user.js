@@ -159,8 +159,6 @@ router.get("/settings", auth, async (req, res) => {
 // endpoint for user resource delete with authentication
 router.delete("/removeaccount", auth, async (req, res) => {
   try {
-    console.log(req.user);
-    console.log("req method is " + req.method);
     await req.user.remove();
     res.cookie("authcookie", "", { maxAge: 1 });
     cancelEmail(req.user.email, req.user.name);
@@ -188,7 +186,6 @@ router.post(
   auth,
   upload.single("avatar"),
   async (req, res) => {
-    console.log("uploading........img");
     // create a new buffer
     const buffer = await sharp(req.file.buffer)
       .resize({
