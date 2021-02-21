@@ -2,6 +2,7 @@
 // login
 const loginEmail = document.getElementById("loginEmail");
 const loginPassword = document.getElementById("loginPassword");
+const loginSubmit = document.getElementById("loginsubmit");
 const msg = document.getElementById("message");
 
 // signup
@@ -45,12 +46,12 @@ function loginValidate(e) {
     helperLoginPassword.innerHTML = "please enter password";
     loginEmail.focus();
     return false;
-  } else if (loginPassword.value.length <= 7) {
+  } else if (loginPassword.value.length < 7) {
     helperLoginPassword.innerHTML =
       "length is too short, should be atleast 7 chars";
     loginEmail.focus();
     return false;
-  } else if (loginPassword.value.length >= 12) {
+  } else if (loginPassword.value.length > 12) {
     helperLoginPassword.innerHTML =
       "length is too long, should be lesser than or equal to 12 chars";
     loginEmail.focus();
@@ -58,6 +59,7 @@ function loginValidate(e) {
   } else {
     helperLoginPassword.innerHTML = "";
   }
+  loginSubmit.disabled = true;
   login(loginEmail.value, loginPassword.value);
 }
 
@@ -68,11 +70,11 @@ function signupValidate(e) {
     helperUsername.innerHTML = "please enter username";
     username.focus();
     return false;
-  } else if (username.value.length <= 7) {
+  } else if (username.value.length < 7) {
     helperUsername.innerHTML = "minimum length should be 7 chars";
     username.focus();
     return false;
-  } else if (username.value.length >= 15) {
+  } else if (username.value.length > 15) {
     helperUsername.innerHTML = "maximum length is 15 chars";
     username.focus();
     return false;
@@ -105,13 +107,13 @@ function signupValidate(e) {
     helperSignupPassword.innerHTML = "please enter password";
     signupPassword.focus();
     return false;
-  } else if (signupPassword.value.length <= 7) {
+  } else if (signupPassword.value.length < 7) {
     console.log(signupPassword.value.length);
     helperSignupPassword.innerHTML =
       "length is too short, should be atleast 7 chars";
     signupPassword.focus();
     return false;
-  } else if (signupPassword.value.length >= 12) {
+  } else if (signupPassword.value.length > 12) {
     helperSignupPassword.innerHTML =
       "length is too long, should be lesser than or equal to 12 chars";
     signupPassword.focus();
@@ -164,6 +166,7 @@ async function login(email, password) {
   const data = await response.json();
   // console.log(data);
   if (data.msg) {
+    loginSubmit.disabled = false;
     msg.classList.add("red-text");
     msg.innerHTML = data.msg;
   } else {
