@@ -36,7 +36,7 @@ router.post("/users", async (req, res) => {
   const user = new User(req.body);
   try {
     await user.save();
-    sendWelcomeEmail(user.email, user.name);
+    // sendWelcomeEmail(user.email, user.name);
     res
       .status(201)
       .send({ msg: "Registered successfully, please login to continue" });
@@ -161,7 +161,7 @@ router.delete("/removeaccount", auth, async (req, res) => {
   try {
     await req.user.remove();
     res.cookie("authcookie", "", { maxAge: 1 });
-    cancelEmail(req.user.email, req.user.name);
+    // cancelEmail(req.user.email, req.user.name);
     res.send("deleted");
   } catch (e) {
     res.status(500).send;
