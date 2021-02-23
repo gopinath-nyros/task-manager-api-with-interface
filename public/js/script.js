@@ -19,6 +19,13 @@ const signupForm = document.getElementById("signup-form");
 loginForm.addEventListener("submit", loginValidate);
 signupForm.addEventListener("submit", signupValidate);
 
+["keyup", "change", "keydown", "blur"].forEach(function (e) {
+  signupPassword.addEventListener(e, passwordCheck);
+});
+
+["keyup", "change", "keydown", "blur"].forEach(function (e) {
+  signupConfirmPassword.addEventListener(e, confirmPasswordCheck);
+});
 // helpers text
 let helperLoginMail = document.querySelector(".login-mail");
 let helperLoginPassword = document.querySelector(".login-password");
@@ -29,6 +36,18 @@ let helperSignupPassword = document.querySelector(".signup-password");
 let helperSignupConfirmPassword = document.querySelector(
   ".signup-con-password"
 );
+
+signupAge.onkeydown = function (e) {
+  if (
+    !(
+      (e.keyCode > 95 && e.keyCode < 106) ||
+      (e.keyCode > 47 && e.keyCode < 58) ||
+      e.keyCode == 8
+    )
+  ) {
+    return false;
+  }
+};
 
 // LOGIN
 function loginValidate(e) {
@@ -91,12 +110,17 @@ function signupValidate(e) {
   }
 
   if (!signupAge.value) {
-    // var age = Number(signupAge.value);
     helperAge.innerHTML = "please enter age";
     signupAge.focus();
     return false;
-  } else if (signupAge.value <= "0") {
+  } else if (Number(signupAge.value) <= 0) {
     helperAge.innerHTML = "please enter age above 0";
+    signupAge.focus();
+    return false;
+  } else if (Number(signupAge.value) > 100) {
+    console.log(typeof Number(signupAge.value));
+    console.log(Number(signupAge.value) > 100);
+    helperAge.innerHTML = "max age limit is 100";
     signupAge.focus();
     return false;
   } else {
@@ -130,20 +154,58 @@ function signupValidate(e) {
     helperSignupConfirmPassword.innerHTML = "";
   }
 
+  // if (signupPassword.value != signupConfirmPassword.value) {
+  //   helperSignupPassword.innerHTML = "password does not match confirm password";
+  //   signupPassword.focus();
+  //   return false;
+  // }
+  //  else {
+  //   helperSignupPassword.innerHTML = "";
+  // }
+  // if (!confirmPasswordCheck(e)) {
+  //   return false;
+  // }
+
+  passwordCheck();
+  confirmPasswordCheck();
+
+  if (passwordCheck() && confirmPasswordCheck()) {
+    signup(
+      username.value,
+      signupEmail.value,
+      signupAge.value,
+      signupPassword.value,
+      signupConfirmPassword.value
+    );
+  }
+}
+
+function passwordCheck(e) {
+  if (signupPassword.value && signupConfirmPassword.value) {
+    if (signupPassword.value != signupConfirmPassword.value) {
+      // console.log("unmatch");
+      helperSignupPassword.innerHTML =
+        "password does not match confirm password";
+      return false;
+    } else {
+      // console.log("match...");
+      helperSignupPassword.innerHTML = "";
+      return true;
+    }
+  }
+}
+
+function confirmPasswordCheck(e) {
+  // console.log(signupConfirmPassword.value);
   if (signupPassword.value != signupConfirmPassword.value) {
+    // console.log("unmatch");
     helperSignupPassword.innerHTML = "password does not match confirm password";
-    signupPassword.focus();
     return false;
   } else {
+    // console.log("match...");
     helperSignupPassword.innerHTML = "";
+    return true;
   }
-  signup(
-    username.value,
-    signupEmail.value,
-    signupAge.value,
-    signupPassword.value,
-    signupConfirmPassword.value
-  );
 }
 
 function formReset() {
